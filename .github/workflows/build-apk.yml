@@ -1,0 +1,44 @@
+name: Build Echo AI APK
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository files
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Extract Echo AI source
+        run: |
+          unzip -q Echo_AI_source_v1.zip
+          test -f echo-ai/pubspec.yaml
+
+      - name: Build Android APK
+        working-directory: echo-ai
+        run: |
+          flutter pub get
+          flutter build apk --release
+
+      - name: Save APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Echo-AI-APK
+          path: echo-ai/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
