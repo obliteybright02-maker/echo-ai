@@ -34,7 +34,7 @@ jobs:
         working-directory: echo-ai
         run: |
           flutter pub get
-          flutter build apk --release --split-per-abi
+           flutter build apk --release
 
       - name: Save APKs
         uses: actions/upload-artifact@v4
