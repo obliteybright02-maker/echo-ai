@@ -30,15 +30,15 @@ jobs:
           unzip -q Echo_AI_source_v1.zip
           test -f echo-ai/pubspec.yaml
 
-      - name: Build Android APK
+  - name: Build Android APK
         working-directory: echo-ai
         run: |
           flutter pub get
-          flutter build apk --release
+          flutter build apk --release --split-per-abi
 
-      - name: Save APK
+- name: Save APKs
         uses: actions/upload-artifact@v4
         with:
-          name: Echo-AI-APK
-          path: echo-ai/build/app/outputs/flutter-apk/app-release.apk
+          name: Echo-AI-APKs
+          path: echo-ai/build/app/outputs/flutter-apk/*.apk
           if-no-files-found: error
